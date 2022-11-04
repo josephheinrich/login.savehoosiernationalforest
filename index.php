@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>LOGIN STAGING</title>
+    <title>LOGIN</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -15,7 +15,7 @@
      <form action="login.php" method="post">
 
         <h2>LOGIN</h2>
-        <h3 style="color: rgb(199, 5, 5); text-align: center; font-size: 1.2rem;">You are in a testing environment.</h5>
+        <h3 style="color: rgb(199, 5, 5); text-align: center; font-size: 1.2rem;">You are in a production environment.</h5>
 
         <?php if (isset($_GET['error'])) { ?>
 
