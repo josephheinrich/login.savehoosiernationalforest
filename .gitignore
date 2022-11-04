@@ -1,0 +1,10 @@
+/archive
+/cgi-bin
+uploads/*
+vendor/*
+vendor/!composer
+vendor/!sendgrid
+
+config.php
+db_conn.php
+include.php
