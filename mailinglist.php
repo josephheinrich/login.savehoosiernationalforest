@@ -13,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     } 
     else {
         //otherwise, get emails from subscribers list
-        $sql = "SELECT email FROM subscribers_test";
+        $sql = "SELECT email FROM subscribers";
         $result = mysqli_query($mysqli, $sql)
         or die(mysqli_error($mysqli));
         $count = 0;
@@ -39,6 +39,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 	<body>
         <br>
         <br>
-		<a href="home_staging.php">Go back</a>
+		<a href="home.php">Go back</a>
 	</body>
 </html>
