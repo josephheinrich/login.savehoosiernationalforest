@@ -1,6 +1,5 @@
 /archive
 /cgi-bin
-uploads/*
 vendor/*
 vendor/!composer
 vendor/!sendgrid
