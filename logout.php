@@ -6,6 +6,6 @@ session_unset();
 
 session_destroy();
 
-header("Location: index_staging.php");
+header("Location: index.php");
 
 ?>

@@ -39,6 +39,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 	<body>
         <br>
         <br>
-		<a href="home_staging.php">Go back</a>
+		<a href="home.php">Go back</a>
 	</body>
 </html>
