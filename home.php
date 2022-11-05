@@ -149,7 +149,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         </h1>
 
         <h4 style="color:red; margin-top: 0.3rem;">
-            You are in a testing enviroment.
+            You are in a <?php echo ENVIRONMENT_TYPE; ?> enviroment.
         </h4>
 
         <div class="outer">
@@ -158,7 +158,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             </h3>
         </div>
 
-        <h2 style="color: black">Send a newsletter</h2>
+        <h2 style="color: black">Send a newsletter - <?php echo ENVIRONMENT_TYPE; ?></h2>
 
         <?php echo $display_block; ?>
 
