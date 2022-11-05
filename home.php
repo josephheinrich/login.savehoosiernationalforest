@@ -128,11 +128,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 <html>
 
 <head>
-<<<<<<< HEAD
     <title>Sending a newletter</title>
-=======
-    <title>Sending a newletters - Staging</title>
->>>>>>> staging
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
@@ -154,11 +150,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         </h1>
 
         <h4 style="color:red; margin-top: 0.3rem;">
-<<<<<<< HEAD
-            You are in a production enviroment.
-=======
-            You are in a testing enviroment.
->>>>>>> staging
+            You are in a <?php echo ENVIRONMENT_TYPE; ?> enviroment.
         </h4>
 
         <div class="outer">
@@ -167,7 +159,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             </h3>
         </div>
 
-        <h2 style="color: black">Send a newsletter</h2>
+        <h2 style="color: black">Send a newsletter - <?php echo ENVIRONMENT_TYPE; ?></h2>
 
         <?php echo $display_block; ?>
 
