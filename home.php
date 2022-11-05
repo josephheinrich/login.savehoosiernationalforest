@@ -52,7 +52,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             return $array;
         }
     //otherwise, get emails from subscribers list
-    $sql = "SELECT email FROM subscribers_test";
+    $sql = SUBSCRIBERS_TABLE;
     $result = mysqli_query($mysqli, $sql)
     or die(mysqli_error($mysqli));
 

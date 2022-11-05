@@ -1,11 +1,12 @@
 <?php
+require_once 'config.php';
 session_start();
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     include 'include.php';
 
     //connect to database
     doDB();
-
+    
     if (mysqli_connect_errno()) {
         //if connection fails, stop script execution
         printf("Connect failed: %s\n", mysqli_connect_error());
@@ -13,7 +14,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     } 
     else {
         //otherwise, get emails from subscribers list
-        $sql = "SELECT email FROM subscribers_test";
+        $sql = SUBSCRIBERS_TABLE;
         $result = mysqli_query($mysqli, $sql)
         or die(mysqli_error($mysqli));
         $count = 0;
