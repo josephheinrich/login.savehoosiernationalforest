@@ -1,8 +1,4 @@
-/archive
-/cgi-bin
-vendor/*
-vendor/!composer
-vendor/!sendgrid
+vendor/
 
 config.php
 db_conn.php

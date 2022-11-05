@@ -52,7 +52,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             return $array;
         }
     //otherwise, get emails from subscribers list
-    $sql = "SELECT email FROM subscribers";
+    $sql = SUBSCRIBERS_TABLE;
     $result = mysqli_query($mysqli, $sql)
     or die(mysqli_error($mysqli));
 
@@ -66,13 +66,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     //break up the list of emails into multiple lists
     $chunkedEmailList = array_chunk($listOfEmails, 2);
 
-    //preserve line breaks for email subject
-    $messageWithLineBreaks = nl2br($_POST['message']);
 
+    $mail_body = stripslashes($_POST['message']);
+    $mail_subject = stripslashes($_POST['subject']);
 
     foreach ($chunkedEmailList as $chunk) {   
         $email = new \SendGrid\Mail\Mail(); //1
-        $email->setFrom("noreply@savehoosiernationalforest.com", "Save Hoosier National Forest");
+        $email->setFrom("noreply@savehoosiernationalforest.com", "Save Hoosier National Forest"); //2
         $email->setReplyTo("savehoosiernationalforest@gmail.com", "Save Hoosier National Forest");
         $email->setTemplateId(
             new \SendGrid\Mail\TemplateId( TEMPLATE_ID )
@@ -91,8 +91,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         foreach ($chunk as $individualEmail) {
             $personalization = new Personalization();
             $personalization->addTo( new To( $individualEmail ) ); //3
-            $personalization->addDynamicTemplateData("mail_body", stripslashes($_POST['message']));
-            $personalization->addDynamicTemplateData("mail_subject", stripslashes($_POST['subject']));
+            $personalization->addDynamicTemplateData("mail_body", $mail_body);
+            $personalization->addDynamicTemplateData("mail_subject", $mail_subject);
             $email->addPersonalization( $personalization );
         }
 
@@ -128,7 +128,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 <html>
 
 <head>
+<<<<<<< HEAD
     <title>Sending a newletter</title>
+=======
+    <title>Sending a newletters - Staging</title>
+>>>>>>> staging
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
@@ -150,7 +154,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         </h1>
 
         <h4 style="color:red; margin-top: 0.3rem;">
+<<<<<<< HEAD
             You are in a production enviroment.
+=======
+            You are in a testing enviroment.
+>>>>>>> staging
         </h4>
 
         <div class="outer">
