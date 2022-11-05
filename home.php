@@ -128,7 +128,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 <html>
 
 <head>
-    <title>Sending a newletter</title>
+
+    <title>Sending a newletters - <?php echo ENVIRONMENT_TYPE; ?></title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
     <style>
