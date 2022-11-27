@@ -1,18 +1,4 @@
-body {
 
-    background: #dbdbda;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    height: 100vh;
-
-    flex-direction: column;
-
-}
 
 *{
 
@@ -23,12 +9,6 @@ body {
 }
 
 form {
-
-    width: 1000px;
-
-    padding: 20px;
-
-    background: rgb(133, 133, 133);
 
     border-radius: 5px;
 
@@ -59,19 +39,11 @@ input {
 
 }
 
-label {
 
-    color: #888;
-
-    font-size: 18px;
-
-    padding: 10px;
-
-}
 
 button {
 
-    float: right;
+    /* float: right;
 
     background: rgb(35, 174, 202);
 
@@ -84,13 +56,13 @@ button {
     margin-right: 10px;
 
     border: none;
-    cursor: pointer;
+    cursor: pointer; */
 
 }
 
 button:hover{
 
-    opacity: .50;
+    /* opacity: .50; */
 
 }
 
@@ -120,7 +92,7 @@ h1 {
 
 a {
 
-    float: right;
+    /* float: right;
 
     background: rgb(39, 110, 176);
 
@@ -134,12 +106,23 @@ a {
 
     border: none;
 
-    text-decoration: none;
+    text-decoration: none; */
 
 }
 
 a:hover{
 
-    opacity: .7;
+    /* opacity: .7; */
 
 }
+
+.login_container {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

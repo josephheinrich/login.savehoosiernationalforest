@@ -12,24 +12,29 @@ session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
      include 'include.php';
-     
      if (!$_POST) {
         //haven't seen the form, so display it
         $display_block = <<<END_OF_BLOCK
-        <form method="POST" action="$_SERVER[PHP_SELF]">
+        <div class="justify-content-center">
+        <form method="POST" action="$_SERVER[PHP_SELF]" onsubmit="if(confirm('Do you really want to send this newsletter?')) {showLoader()} else {return false;};">
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" class="form-control" id="subject" name="subject">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Body</label>
+                <textarea class="form-control" id="message" name="message" rows="10"></textarea>
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="file" name="file_to_upload" id="file_to_upload" accept=".jpg, .png, .jpeg, .pdf">
+            </div>
+            <p style="margin-left:10px; display:none" id="file_name"></p>
+            <progress id="progress_bar" value="0" max="100" style="width:400px; margin-left: 10px;"></progress>
+            <p id="progress_status"></p>
 
-        <p><label for="subject" style="color: white;">Subject:</label><br/>
-        <input type="text" id="subject" name="subject" size="40" /></p>
-
-        <p style="margin:10px;"><label style="color:white;" for="message">Mail Body:</label><br/>
-        <textarea style="border-radius: 0.25rem; width: 100%; height: 13rem;" id="message" name="message" cols="50"   rows="10"></textarea></p>
-        <input type="file" name="file_to_upload" id="file_to_upload" accept=".jpg, .png, .jpeg, .pdf">
-        <p style="margin-left:10px;" id="file_name"></p>
-        <progress id="progress_bar" value="0" max="100" style="width:400px; margin-left: 10px;"></progress>
-        <p id="progress_status"></p>
-        <!--<input style="float: left; width: auto; margin-left:10px;" type="button" value="Upload Attachment" id="upload_file_button"><br />-->
-        <button type="submit" name="submit" value="submit">Send Email</button>
+            <button type="submit" class="btn btn-primary" name="submit" value="submit">Send Email</button>
         </form>
+        </div>
         END_OF_BLOCK;
     } else if ($_POST) {
     //want to send form, so check for required fields
@@ -38,7 +43,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
         echo "issue";
         exit;
     }
-
+    //$script_tag = "";
     //connect to database
     doDB();
 
@@ -64,11 +69,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     }
 
     //break up the list of emails into multiple lists
-    $chunkedEmailList = array_chunk($listOfEmails, 2);
+    $chunkedEmailList = array_chunk($listOfEmails, BATCH_SIZE);
 
     $mail_body = stripslashes($_POST['message']);
     $mail_subject = stripslashes($_POST['subject']);
-
+    $count = 1;
+    $display_block .= "<div class='text-center'>";
     foreach ($chunkedEmailList as $chunk) {   
         $email = new \SendGrid\Mail\Mail(); //1
         $email->setFrom("noreply@savehoosiernationalforest.com", "Save Hoosier National Forest"); //2
@@ -104,7 +110,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             if (strpos($emailResponse, '202') !== false) {
                 $display_block .= "<p>Success! Newsletter sent to:</p>";
                 foreach($chunk as $emailaddress){
-                    $display_block .= $emailaddress."<br/>";
+                    $display_block .= $count.". ".$emailaddress."<br/>";
+                    $count += 1;
                 }
             }
 
@@ -112,7 +119,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
             echo 'Caught exception: '. $e->getMessage() ."\n";
         }
 
-}
+    }
+    $display_block .= "</div>";
+    $script_tag = "hideLoader();";
 
 
     mysqli_free_result($result);
@@ -122,78 +131,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
 
  ?>
 
-<!DOCTYPE html>
+<?php include("home_top.php");?>
 
-<html>
+<?php echo $display_block; ?>
 
-<head>
-    <title>Sending a newletters - <?php echo ENVIRONMENT_TYPE; ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <style>
-        html {
-            font-family: arial, sans-serif;
-        }
-
-        .outer > * {
-            display: inline-block;
-            vertical-align: middle;
-        }
-    </style>
-
-</head>
-
-<body style="margin: 5rem; padding-bottom: 3rem;">
-        <h1 style="margin-bottom: 0.2rem; margin-top: 6rem;">
-            Hello, <?php echo $_SESSION['user_name']; ?>
-        </h1>
-
-        <h4 style="color:red; margin-top: 0.3rem;">
-            You are in a <?php echo ENVIRONMENT_TYPE; ?> enviroment.
-        </h4>
-
-        <div class="outer">
-            <h3>
-                <a href="mailinglist.php" target="_blank">View mailing list</a>
-            </h3>
-        </div>
-
-        <h2 style="color: black">Send a newsletter - <?php echo ENVIRONMENT_TYPE; ?></h2>
-
-        <?php echo $display_block; ?>
-
-        <a style="margin-top:10px; background-color: rgb(218, 171, 33);" href="logout.php">Logout</a>
-
-     <script>
-        document.getElementById('file_to_upload').addEventListener('change', (event) => {
-            window.selectedFile = event.target.files[0];
-            document.getElementById('file_name').innerHTML = window.selectedFile.name;
-            uploadFile(window.selectedFile);
-        });
-
-        function uploadFile(file) {
-            var formData = new FormData();
-            formData.append('file_to_upload', file);
-            var ajax = new XMLHttpRequest();
-            ajax.upload.addEventListener("progress", progressHandler, false);
-            ajax.open('POST', 'upload.php');
-            ajax.send(formData);
-        }
-
-        function progressHandler(event) {
-            var percent = (event.loaded / event.total) * 100;
-            document.getElementById("progress_bar").value = Math.round(percent);
-            document.getElementById("progress_status").innerHTML = Math.round(percent) + "% uploaded";
-        }
-    </script>
-</body>
-
-
-</html>
-
+<?php include("home_bottom.php");?>
 
 <?php 
-
 } else{
 
      header("Location: index.php");
@@ -201,5 +145,4 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
      exit();
 
 }
-
- ?>
+?>
