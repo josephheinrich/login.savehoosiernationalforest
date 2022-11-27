@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Sending a newletter - <?php echo ENVIRONMENT_TYPE; ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-dark">
+                    <a style="text-decoration:none; color: inherit" href="logout.php">Logout</a>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-md-4 mb-1">
+                    <h3>Hello, Admin<?php echo $_SESSION['user_name']; ?></h3>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <h3 style="color: red">
+                        You are in a testing <?php echo ENVIRONMENT_TYPE; ?> enviroment.
+                    </h3>
+                </div>
+                <div class="col-md-4 mb-1">
+                    <button type="button" class="btn btn-primary">
+                        <a href="mailinglist.php" style="color:white; text-decoration: none;" target="_blank">View mailing list</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <h2 class="text-center">Send a Newsletter - Testing<?php echo ENVIRONMENT_TYPE; ?></h2>
+            <div class="justify-content-center">
+                <form method="POST" action="$_SERVER[PHP_SELF]" onsubmit="return confirm('Do you really want to send this newsletter?');">
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Body</label>
+                        <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                    </div>
+
+
+                    <input type="file" name="file_to_upload" id="file_to_upload" accept=".jpg, .png, .jpeg, .pdf">
+                    <p style="margin-left:10px;" id="file_name"></p>
+                    <progress id="progress_bar" value="0" max="100" style="width:400px; margin-left: 10px;"></progress>
+                    <p id="progress_status"></p>
+
+                    <button type="submit" name="submit" value="submit">Send Email</button>
+                </form>
+            </div>
+        </div>
+    </div>  
+
+     <script>
+        document.getElementById('file_to_upload').addEventListener('change', (event) => {
+            window.selectedFile = event.target.files[0];
+            document.getElementById('file_name').innerHTML = window.selectedFile.name;
+            uploadFile(window.selectedFile);
+        });
+
+        function uploadFile(file) {
+            var formData = new FormData();
+            formData.append('file_to_upload', file);
+            var ajax = new XMLHttpRequest();
+            ajax.upload.addEventListener("progress", progressHandler, false);
+            ajax.open('POST', 'upload.php');
+            ajax.send(formData);
+        }
+
+        function progressHandler(event) {
+            var percent = (event.loaded / event.total) * 100;
+            document.getElementById("progress_bar").value = Math.round(percent);
+            document.getElementById("progress_status").innerHTML = Math.round(percent) + "% uploaded";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
