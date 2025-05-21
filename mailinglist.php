@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+session_save_path('/home2/savehoos/php_sessions');
 session_start();
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
     include 'include.php';

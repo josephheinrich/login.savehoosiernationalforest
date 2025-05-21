@@ -8,6 +8,7 @@ use SendGrid\Mail\ReplyTo;
 use SendGrid\Helper\Assert;
 use SendGrid\Mail\Substitution;
 
+session_save_path('/home2/savehoos/php_sessions');
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {

@@ -1,5 +1,6 @@
 <?php 
 
+session_save_path('/home2/savehoos/php_sessions');
 session_start(); 
 
 include "db_conn.php";
